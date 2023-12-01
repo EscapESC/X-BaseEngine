@@ -1,2 +1,2 @@
 # X-BaseEngine
-X-Base Studios game Engine
+Game Engine of X-Base Studios
