@@ -13,6 +13,7 @@
                 "${fileDirname}\\Engine\\include",
                 "-lSDL2main",
                 "-lSDL2",
+                "-lSDL2_image",
                 "-L",
                 "Engine\\lib",
                 "-o",
