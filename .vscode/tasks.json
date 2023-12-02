@@ -10,13 +10,13 @@
                 "-g",
                 "${file}",
                 "-I",
-                "${fileDirname}\\include",
+                "${fileDirname}\\Engine\\include",
                 "-lSDL2main",
                 "-lSDL2",
                 "-L",
-                "lib",
+                "Engine\\lib",
                 "-o",
-                "${fileDirname}\\build\\${fileBasenameNoExtension}.exe",
+                "${fileDirname}\\Engine\\build\\${fileBasenameNoExtension}.exe",
                 
             ],
             "options": {
