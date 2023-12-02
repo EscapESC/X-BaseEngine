@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]){
     Engine engine = Engine();
     
-    engine.XInnit();
+    engine.XInnit(SDL_INIT_EVERYTHING);
     window = engine.XCreate_Window("X-Base Engine", 800,600);
     renderer = engine.XCreate_Renderer(window);
     engine.Xwindow_clear(renderer, 255,255,255,255);
