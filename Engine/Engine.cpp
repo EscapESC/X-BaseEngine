@@ -12,16 +12,29 @@ class Engine{
         return 0;
     }
 
-    void XCreate_Window(const char* title, int width, int height){
-        window = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width,height, SDL_WINDOW_SHOWN);
-        renderer = SDL_CreateRenderer(window, -1,0);
-
+    SDL_Window* XCreate_Window(const char* title, int width, int height){
+        SDL_Window *wind = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width,height, SDL_WINDOW_SHOWN);
+        return wind;
     }
 
-    void Xwindow_clear(int r, int g, int b, int a){
+    SDL_Renderer* XCreate_Renderer(SDL_Window *wind){
+        renderer = SDL_CreateRenderer(wind, -1,0);
+        return renderer;
+    }
 
-        SDL_SetRenderDrawColor(renderer,r,g,b,a);
-        SDL_RenderClear(renderer);
-        SDL_RenderPresent(renderer);
+    void Xwindow_clear(SDL_Renderer *rend, int r, int g, int b, int a){
+
+        SDL_SetRenderDrawColor(rend,r,g,b,a);
+        SDL_RenderClear(rend);
+        SDL_RenderPresent(rend);
+    }
+
+    void XDestroyWindow(SDL_Window *x){
+        SDL_DestroyWindow(x);
+    }
+
+    int XQuit(){
+        SDL_Quit();
+        return 0;
     }
 };
