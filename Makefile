@@ -1,1 +1,1 @@
-g++ -Iinclude -Llib -o Engine.exe Engine.cpp -lmingw32 -lSDL2main -lSDL2
+g++ -Iengine\include -Lengine\lib -o main.exe main.cpp -lmingw32 -lSDL2main -lSDL2
