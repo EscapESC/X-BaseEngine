@@ -11,23 +11,23 @@ int main(int argc, char *argv[]){
     Graphics gp = Graphics();
     
     engine.XInnit(SDL_INIT_EVERYTHING);
-    window = engine.XCreate_Window("X-Base Engine", 800,600);
-    renderer = engine.XCreate_Renderer(window);
-    engine.Xwindow_clear(renderer, 255,255,255,255);
+    window = gp.XCreate_Window("X-Base Engine", 800,600);
+    renderer = gp.XCreate_Renderer(window);
+    gp.Xwindow_clear(renderer, 255,255,255,255);
 
     const char* path = "src/Lambda.png";
-    SDL_Texture* Lambda = gp.LoadTexture("src/Lambda.png", renderer);
+    SDL_Texture* Lambda = gp.XLoadTexture("src/Lambda.png", renderer);
 
     SDL_Rect rect;
     rect.w = 100;
     rect.h = 100;
-    rect.x = 0;
-    rect.y = 0;
+    rect.x = 800/2-100/2;
+    rect.y = 600/2-100/2;
     SDL_Rect* prect = &rect;
 
-    engine.Xwindow_clear(renderer,0,0,0,0);
-    gp.drawImage(Lambda, renderer,nullptr, prect);
-    gp.paint(renderer);
+    gp.Xwindow_clear(renderer,0,0,0,0);
+    gp.XdrawImage(Lambda, renderer,nullptr, prect);
+    gp.Xpaint(renderer);
     
     SDL_Delay(10000);
     return 0;
