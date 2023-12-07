@@ -26,7 +26,8 @@ int main(int argc, char *argv[]){
     SDL_Rect* prect = &rect;
 
     gp.Xwindow_clear(renderer,0,0,0,0);
-    gp.XdrawImage(Lambda, renderer,nullptr, prect);
+    gp.XdrawTexture(Lambda, renderer,nullptr, prect);
+    SDL_DestroyTexture(Lambda);
 
     SDL_Vertex vertex_1 = {{100.5, 200.5}, {255, 0, 0, 255}, {1, 1}};
     SDL_Vertex vertex_2 = {{200.5, 100.5}, {0, 255, 0, 255}, {1, 1}};
@@ -39,8 +40,29 @@ int main(int argc, char *argv[]){
     };
 
     SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
+
+    SDL_Texture* text = gp.Xtext_Texture(renderer,"HELLO WORLD",TTF_OpenFont("src/fonts/Aaargh.ttf", 24), {255,255,255});
+    SDL_Rect trect;
+    rect.w = 100;
+    rect.h = 100;
+    rect.x = 500;
+    rect.y = 500;
+    SDL_Rect* tprect = &trect;
+
+    gp.XdrawTexture(text, renderer, NULL, tprect);
+    SDL_DestroyTexture(text);
     gp.Xpaint(renderer);
     
-    SDL_Delay(10000);
+    bool quit;
+
+    while (!quit) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            
+        if( event.type == SDL_QUIT )
+            quit = true;
+    }
+    /* do some other stuff here -- draw your app, etc. */
+}
     return 0;
 }

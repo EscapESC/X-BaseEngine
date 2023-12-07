@@ -2,6 +2,7 @@
 
 #include "include\SDL.h"
 #include "include\SDL_image.h"
+#include "include\SDL_ttf.h"
 
 class Graphics{
 
@@ -19,6 +20,16 @@ class Graphics{
         return rend;
     }
 
+    //Generates surface -> texture -> return
+    SDL_Texture* Xtext_Texture(SDL_Renderer* Renderer, const char* Text, TTF_Font *Font, SDL_Color Color){
+        if(Font == NULL){std::cout << "Error: Empty Font given!" << std::endl;}
+        SDL_Surface* temp = TTF_RenderText_Solid(Font, Text, Color);
+        SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, temp);
+        SDL_FreeSurface(temp);
+
+        return texture;
+    }
+
     //Clears the render of a window with a rgba color.
     void Xwindow_clear(SDL_Renderer *rend, int r, int g, int b, int a){
 
@@ -32,9 +43,9 @@ class Graphics{
         SDL_DestroyWindow(x);
     }
 
-    void XdrawImage(SDL_Texture* img, SDL_Renderer *rend, SDL_Rect* srcRect, SDL_Rect* dstRect){
+    void XdrawTexture(SDL_Texture* img, SDL_Renderer *rend, SDL_Rect* srcRect, SDL_Rect* dstRect){
 
-        SDL_RenderCopy(rend, img, NULL,dstRect);
+        SDL_RenderCopy(rend, img, srcRect,dstRect);
 
     }
 
