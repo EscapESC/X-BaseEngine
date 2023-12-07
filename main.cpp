@@ -2,6 +2,7 @@
 #include "Engine/Engine.cpp"
 #include "Engine\include\SDL.h"
 #include "Engine/Graphics.cpp"
+#include "Engine\include\SDL_ttf.h"
 
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -13,7 +14,6 @@ int main(int argc, char *argv[]){
     engine.XInnit(SDL_INIT_EVERYTHING);
     window = gp.XCreate_Window("X-Base Engine", 800,600);
     renderer = gp.XCreate_Renderer(window);
-    gp.Xwindow_clear(renderer, 255,255,255,255);
 
     const char* path = "src/Lambda.png";
     SDL_Texture* Lambda = gp.XLoadTexture("src/Lambda.png", renderer);
@@ -40,19 +40,21 @@ int main(int argc, char *argv[]){
     };
 
     SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
-
-    SDL_Texture* text = gp.Xtext_Texture(renderer,"HELLO WORLD",TTF_OpenFont("src/fonts/Aaargh.ttf", 24), {255,255,255});
+    gp.Xinit_TTF();
+    TTF_Font *font= TTF_OpenFont("src/fonts/Sans.ttf",24);
+    SDL_Texture* text = gp.Xtext_Texture(renderer,"HELLO WORLD",font, SDL_Color {255,255,255, 255});
     SDL_Rect trect;
-    rect.w = 100;
-    rect.h = 100;
-    rect.x = 500;
-    rect.y = 500;
+    rect.w = 500;
+    rect.h = 500;
+    rect.x = 25;
+    rect.y = 25;
     SDL_Rect* tprect = &trect;
 
     gp.XdrawTexture(text, renderer, NULL, tprect);
+
     SDL_DestroyTexture(text);
     gp.Xpaint(renderer);
-    
+
     bool quit;
 
     while (!quit) {

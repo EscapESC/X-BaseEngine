@@ -22,12 +22,17 @@ class Graphics{
 
     //Generates surface -> texture -> return
     SDL_Texture* Xtext_Texture(SDL_Renderer* Renderer, const char* Text, TTF_Font *Font, SDL_Color Color){
-        if(Font == NULL){std::cout << "Error: Empty Font given!" << std::endl;}
+        if(Font == NULL){std::cout << "Error: "<< TTF_GetError() << std::endl;}
         SDL_Surface* temp = TTF_RenderText_Solid(Font, Text, Color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, temp);
+        if(texture == NULL){std::cout << "Error: "<< SDL_GetError() << std::endl;}
         SDL_FreeSurface(temp);
 
         return texture;
+    }
+
+    void Xinit_TTF(){
+        TTF_Init();
     }
 
     //Clears the render of a window with a rgba color.
