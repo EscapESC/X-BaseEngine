@@ -14,7 +14,7 @@ int main(int argc, char *argv[]){
     engine.XInnit(SDL_INIT_EVERYTHING);
     window = gp.XCreate_Window("X-Base Engine", 800,600);
     renderer = gp.XCreate_Renderer(window);
-
+    
     const char* path = "src/Lambda.png";
     SDL_Texture* Lambda = gp.XLoadTexture("src/Lambda.png", renderer);
 
@@ -41,13 +41,13 @@ int main(int argc, char *argv[]){
 
     SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
     gp.Xinit_TTF();
-    TTF_Font *font= TTF_OpenFont("src/fonts/Sans.ttf",24);
+    TTF_Font *font= TTF_OpenFont("src/fonts/Sans.ttf",50);
     SDL_Texture* text = gp.Xtext_Texture(renderer,"HELLO WORLD",font, SDL_Color {255,255,255, 255});
     SDL_Rect trect;
-    rect.w = 500;
-    rect.h = 500;
-    rect.x = 25;
-    rect.y = 25;
+    trect.w = 200;
+    trect.h = 50;
+    trect.x = 25;
+    trect.y = 25;
     SDL_Rect* tprect = &trect;
 
     gp.XdrawTexture(text, renderer, NULL, tprect);
