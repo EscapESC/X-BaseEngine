@@ -11,6 +11,15 @@ class Engine{
         return 0;
     }
 
+    //Limits the tick speed/s
+    void XTick_Delay(Uint32 startFrame, int frameDelay){
+        int frameNow = SDL_GetTicks() - startFrame;
+
+        if (frameDelay > frameNow){
+            SDL_Delay(frameDelay - frameNow);
+        }
+    }
+
     //Quits SDL which would have to be re Initilized again to be used.
     int XQuit(){
         SDL_Quit();

@@ -7,6 +7,9 @@
     SDL_Window *window;
     SDL_Renderer *renderer;
 
+    const int FPS = 60;
+    const int tickDelay = 1000 / FPS;
+
 int main(int argc, char *argv[]){
     Engine engine = Engine();
     Graphics gp = Graphics();
@@ -67,14 +70,16 @@ int main(int argc, char *argv[]){
 
     bool quit;
 
+    Uint32 startFrame = SDL_GetTicks();
     while (!quit) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             
         if( event.type == SDL_QUIT )
             quit = true;
+        }
+
+        engine.XTick_Delay(startFrame, tickDelay);
     }
-    /* do some other stuff here -- draw your app, etc. */
-}
     return 0;
 }
