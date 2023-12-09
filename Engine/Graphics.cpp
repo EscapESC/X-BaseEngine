@@ -9,8 +9,8 @@ class Graphics{
     public:
 
     //Generate a Window and return its pointer back;
-    SDL_Window* XCreate_Window(const char* title, int width, int height){
-        SDL_Window *wind = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width,height, SDL_WINDOW_SHOWN);
+    SDL_Window* XCreate_Window(const char* title, int width, int height, int flag){
+        SDL_Window *wind = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width,height, flag);
         return wind;
     }
 
@@ -50,13 +50,14 @@ class Graphics{
 
     void XdrawTexture(SDL_Texture* img, SDL_Renderer *rend, SDL_Rect* srcRect, SDL_Rect* dstRect){
 
-        SDL_RenderCopy(rend, img, srcRect,dstRect);
+        if (SDL_RenderCopy(rend, img, srcRect,dstRect) != 1){
+            std::cout << "Error: " << SDL_GetError() << std::endl;
+        }
 
     }
 
     SDL_Texture* XLoadTexture(const char *path, SDL_Renderer* rend){
         SDL_Surface* tmp = IMG_Load(path);
-
         SDL_Texture* loadedTexture = SDL_CreateTextureFromSurface(rend, tmp);
         SDL_FreeSurface(tmp);
     return loadedTexture;

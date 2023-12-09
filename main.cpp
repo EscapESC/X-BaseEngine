@@ -12,12 +12,11 @@ int main(int argc, char *argv[]){
     Graphics gp = Graphics();
     
     engine.XInnit(SDL_INIT_EVERYTHING);
-    window = gp.XCreate_Window("X-Base Engine", 800,600);
+    window = gp.XCreate_Window("X-Base Engine", 800,600, SDL_WINDOW_SHOWN);
     renderer = gp.XCreate_Renderer(window);
     
-    const char* path = "src/Lambda.png";
     SDL_Texture* Lambda = gp.XLoadTexture("src/Lambda.png", renderer);
-
+    SDL_Texture* Flashlight = gp.XLoadTexture("src/flashlight.png", renderer);
     SDL_Rect rect;
     rect.w = 100;
     rect.h = 100;
@@ -53,6 +52,17 @@ int main(int argc, char *argv[]){
     gp.XdrawTexture(text, renderer, NULL, tprect);
 
     SDL_DestroyTexture(text);
+
+    SDL_Rect frect;
+    frect.w = 100;
+    frect.h = 100;
+    frect.x = 400/2-100/2;
+    frect.y = 200/2;
+    SDL_Rect* fprect = &frect;
+
+    gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
+    SDL_DestroyTexture(Flashlight);
+
     gp.Xpaint(renderer);
 
     bool quit;
