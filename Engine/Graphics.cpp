@@ -22,10 +22,10 @@ class Graphics{
 
     //Generates surface -> texture -> return
     SDL_Texture* Xtext_Texture(SDL_Renderer* Renderer, const char* Text, TTF_Font *Font, SDL_Color Color){
-        if(Font == NULL){std::cout << "Error: "<< TTF_GetError() << std::endl;}
+        if(Font == NULL){std::cout << "Xtext_Texture Error: "<< TTF_GetError() << std::endl;}
         SDL_Surface* temp = TTF_RenderText_Solid(Font, Text, Color);
         SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, temp);
-        if(texture == NULL){std::cout << "Error: "<< SDL_GetError() << std::endl;}
+        if(texture == NULL){std::cout << "Xtext_Texture Error: "<< SDL_GetError() << std::endl;}
         SDL_FreeSurface(temp);
 
         return texture;
@@ -50,8 +50,8 @@ class Graphics{
 
     void XdrawTexture(SDL_Texture* img, SDL_Renderer *rend, SDL_Rect* srcRect, SDL_Rect* dstRect){
 
-        if (SDL_RenderCopy(rend, img, srcRect,dstRect) != 1){
-            std::cout << "Error: " << SDL_GetError() << std::endl;
+        if (SDL_RenderCopy(rend, img, srcRect,dstRect) != 0){
+            std::cout << "XdrawTexture Error: " << SDL_GetError() << std::endl;
         }
 
     }

@@ -79,6 +79,10 @@ int main(int argc, char *argv[]){
             quit = true;
         }
 
+        if(event.type == SDL_KEYDOWN){
+            std::cout << "Key Pressed" << std::endl;
+        }
+
         engine.XTick_Delay(startFrame, tickDelay);
     }
     return 0;
