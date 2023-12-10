@@ -75,14 +75,14 @@ int main(int argc, char *argv[]){
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             
-        if( event.type == SDL_QUIT )
+        if( event.type == SDL_QUIT ){
             quit = true;
         }
 
         if(event.type == SDL_KEYDOWN){
             std::cout << "Key Pressed" << std::endl;
         }
-
+        }
         engine.XTick_Delay(startFrame, tickDelay);
     }
     return 0;
