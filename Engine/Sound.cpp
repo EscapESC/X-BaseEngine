@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include "include\SDL.h"
+#include "include\SDL_mixer.h"
+
+class Sound{
+
+    public:
+
+    /*MAIN VOIDS*/
+    void XinitSound(){
+        Mix_Init(MIX_INIT_MP3);
+        if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){ std::cout << "XinitSound ERROR: "<< Mix_GetError() << std::endl;}
+        
+    }
+
+    void XquitSound(){
+        //Fucking Pray for no memory leaks
+        Mix_Quit();
+    }
+
+    //Just calculates witch number to throw to the mixer. Could be private
+    int XcalculateVolume(int volume){
+        int v = (MIX_MAX_VOLUME * volume)/100;
+        return v;
+    }
+
+    /*SOUND VOIDS*/
+    Mix_Music* XloadMusic(const char* filepath){
+        Mix_Music *m;
+        m = Mix_LoadMUS(filepath);
+        if(m==NULL){std::cout<<"XloadMusic Error: "<<Mix_GetError()<<std::endl;}
+        return m;
+    }
+
+    Mix_Chunk* XloadSound(const char* filepath){
+        Mix_Chunk *ch;
+        ch = Mix_LoadWAV(filepath);
+        if(ch==NULL){std::cout<<"XloadSound Error: "<<Mix_GetError()<<std::endl;}
+        return ch;
+    }
+
+    //The most basic, dont see much potencial.
+    int XplayMusic(Mix_Music* music, int volume, int loops){
+        Mix_VolumeMusic(XcalculateVolume(volume));
+        return Mix_PlayMusic(music, loops);
+    }
+
+    //The best of all for all situations. Noises, soundtracks everything.
+    int XplaySound(Mix_Chunk* sound,int channel, int volume, int loops){
+        int ch = Mix_PlayChannel(channel, sound, loops);
+        Mix_Volume(ch, XcalculateVolume(volume));
+        return ch;
+    }
+
+    //Panned version of the XplaySound.
+    int XplaySoundPanned(Mix_Chunk* sound, int channel, Uint8 left, Uint8 right, int volume, int loops){
+        int ch = Mix_PlayChannel(channel, sound, loops);
+        Mix_Volume(ch, XcalculateVolume(volume));
+        Mix_SetPanning(ch, left, right);
+        return ch;
+    }
+
+    /*SETTINGS VOIDS*/
+
+    int XsetChannelPanning(int channel, Uint8 left, Uint8 right){
+        return Mix_SetPanning(channel, left, right);
+    }
+
+    int XsetVolume(int channel, int volume){
+        return Mix_Volume(channel, XcalculateVolume(volume));
+    }
+};

@@ -3,6 +3,8 @@
 #include "Engine\include\SDL.h"
 #include "Engine/Graphics.cpp"
 #include "Engine\include\SDL_ttf.h"
+#include "Engine/Sound.cpp"
+#include "Engine\include\SDL_mixer.h"
 
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -13,6 +15,7 @@
 int main(int argc, char *argv[]){
     Engine engine = Engine();
     Graphics gp = Graphics();
+    Sound s = Sound();
     
     engine.XInnit(SDL_INIT_EVERYTHING);
     window = gp.XCreate_Window("X-Base Engine", 800,600, SDL_WINDOW_SHOWN);
@@ -65,6 +68,10 @@ int main(int argc, char *argv[]){
 
     gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
     SDL_DestroyTexture(Flashlight);
+
+    s.XinitSound();
+    Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
+    s.XplaySoundPanned(sound, -1,100,0, 100, -1);
 
     gp.Xpaint(renderer);
 
