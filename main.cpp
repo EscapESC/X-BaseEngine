@@ -92,5 +92,7 @@ int main(int argc, char *argv[]){
         }
         engine.XTick_Delay(startFrame, tickDelay);
     }
+    s.XquitSound();
+    engine.XQuit();
     return 0;
 }

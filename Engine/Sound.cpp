@@ -7,13 +7,16 @@ class Sound{
 
     public:
 
-    /*MAIN VOIDS*/
+    /*MAIN VOIDS ------------------------------------------------------------------*/
+
+    //Initalizes SDL_mixer library.
     void XinitSound(){
         Mix_Init(MIX_INIT_MP3);
         if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0){ std::cout << "XinitSound ERROR: "<< Mix_GetError() << std::endl;}
         
     }
 
+    //Calls Mix_Quit function.
     void XquitSound(){
         //Fucking Pray for no memory leaks
         Mix_Quit();
@@ -25,7 +28,8 @@ class Sound{
         return v;
     }
 
-    /*SOUND VOIDS*/
+    /*SOUND VOIDS -----------------------------------------------------------------*/
+
     Mix_Music* XloadMusic(const char* filepath){
         Mix_Music *m;
         m = Mix_LoadMUS(filepath);
@@ -61,7 +65,31 @@ class Sound{
         return ch;
     }
 
-    /*SETTINGS VOIDS*/
+    //Play sound the same way as XplaySound() but with a fade in period.
+    int XfadeInSound(Mix_Chunk* sound,int channel, int volume, int loops, int time){
+        int ch = Mix_FadeInChannel(channel, sound, loops, time);
+        Mix_Volume(ch, XcalculateVolume(volume));
+        return ch;
+    }
+
+    //Halts channel with a fadeout
+    int XfadeOutChannel(int channel, int time){
+        return Mix_FadeOutChannel(channel, time);
+    }
+
+    void XpauseChannel(int channel){
+        Mix_Pause(channel);
+    }
+
+    void XplayChannel(int channel){
+        Mix_Resume(channel);
+    }
+
+    int XstopChannel(int channel){
+        return Mix_HaltChannel(channel);
+    }
+
+    /*SETTINGS VOIDS ------------------------------------------------------------------*/
 
     int XsetChannelPanning(int channel, Uint8 left, Uint8 right){
         return Mix_SetPanning(channel, left, right);
