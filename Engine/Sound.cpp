@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <array>
+#include <cmath>
 #include "include\SDL.h"
 #include "include\SDL_mixer.h"
 
@@ -26,6 +28,24 @@ class Sound{
     int XcalculateVolume(int volume){
         int v = (MIX_MAX_VOLUME * volume)/100;
         return v;
+    }
+
+    std::array<int,3> XcalculatePanning2D(int Volume, int srcX, int srcY, int recX, int recY, float area, float falloff){
+        int locX = recX - srcX;
+        int locY = recY - srcY;
+        int dist = std::sqrt(locX*locX+locY*locY);
+
+        int finalVolume = Volume*((falloff/2-dist)/(falloff/2));
+        int right;
+        int left;
+        if (locX>0){right = (area/2-locX)/(area/2)*100;left = (right-100)*-1;}
+        if (locX<0){left = (area/2+locX)/(area/2)*100;right = (left-100)*-1;}
+        if(right<0){right=0;}
+        if(left<0){left=0;}
+        if(right>100){right=100;}
+        if(left>100){left=100;}
+        if(finalVolume<0){finalVolume=0;}
+        return {finalVolume, left, right};
     }
 
     /*SOUND VOIDS -----------------------------------------------------------------*/

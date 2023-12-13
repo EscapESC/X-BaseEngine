@@ -5,11 +5,12 @@
 #include "Engine\include\SDL_ttf.h"
 #include "Engine/Sound.cpp"
 #include "Engine\include\SDL_mixer.h"
+#include <array>
 
     SDL_Window *window;
     SDL_Renderer *renderer;
 
-    const int FPS = 60;
+    const int FPS = 10;
     const int tickDelay = 1000 / FPS;
 
 int main(int argc, char *argv[]){
@@ -71,11 +72,14 @@ int main(int argc, char *argv[]){
 
     s.XinitSound();
     Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
-    s.XplaySoundPanned(sound, -1,100,0, 100, -1);
+    int ch = s.XplaySound(sound, -1,100, -1);
 
     gp.Xpaint(renderer);
 
     bool quit;
+
+    int srcX=-10000;
+    int srcY=0;
 
     Uint32 startFrame = SDL_GetTicks();
     while (!quit) {
@@ -90,6 +94,13 @@ int main(int argc, char *argv[]){
             std::cout << "Key Pressed" << std::endl;
         }
         }
+
+        srcX =srcX + 1;
+        std::array<int,3> panning= s.XcalculatePanning2D(100,srcX,srcY,0,0,10000,10000);
+        std::cout << panning[0] << " " << panning[1] << " " <<panning[2] << " " << std::endl;
+        s.XsetVolume(ch,panning[0]);
+        s.XsetChannelPanning(ch, panning[1],panning[2]);
+
         engine.XTick_Delay(startFrame, tickDelay);
     }
     s.XquitSound();

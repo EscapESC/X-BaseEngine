@@ -11,7 +11,7 @@ class Engine{
     int XInnit(Uint32 init) {
         // Need to call with SDL_INIT_EVERYTHING or any of its varyants
         int rtn = SDL_Init(init);
-        if(rtn!=0){std::cout<<"XInnig Error: "<<SDL_GetError<<std::endl;}
+        if(rtn!=0){std::cout<<"XInnig Error: "<<SDL_GetError()<<std::endl;}
         return rtn;
     }
 
