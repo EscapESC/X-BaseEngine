@@ -5,12 +5,13 @@
 #include "Engine\include\SDL_ttf.h"
 #include "Engine/Sound.cpp"
 #include "Engine\include\SDL_mixer.h"
+#include "Engine\GameObject.cpp"
 #include <array>
 
     SDL_Window *window;
     SDL_Renderer *renderer;
 
-    const int FPS = 10;
+    const int FPS = 60;
     const int tickDelay = 1000 / FPS;
 
 int main(int argc, char *argv[]){
@@ -32,7 +33,10 @@ int main(int argc, char *argv[]){
     SDL_Rect* prect = &rect;
 
     gp.Xwindow_clear(renderer,0,0,0,0);
-    gp.XdrawTexture(Lambda, renderer,nullptr, prect);
+
+    GameObject go = GameObject();
+    go.createGameObject(renderer,Lambda, nullptr,prect);
+    go.Render();
     SDL_DestroyTexture(Lambda);
 
     SDL_Vertex vertex_1 = {{100.5, 200.5}, {255, 0, 0, 255}, {1, 1}};
@@ -73,6 +77,8 @@ int main(int argc, char *argv[]){
     s.XinitSound();
     Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
     int ch = s.XplaySound(sound, -1,100, -1);
+
+
 
     gp.Xpaint(renderer);
 
