@@ -24,7 +24,7 @@ class Sound{
         Mix_Quit();
     }
 
-    //Just calculates witch number to throw to the mixer. Could be private
+    //Just calculates whitch number to throw to the mixer. Could be private
     int XcalculateVolume(int volume){
         int v = (MIX_MAX_VOLUME * volume)/100;
         return v;

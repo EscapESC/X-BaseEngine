@@ -37,7 +37,7 @@ int main(int argc, char *argv[]){
     GameObject go = GameObject();
     go.createGameObject(renderer,Lambda, nullptr,prect);
     go.Render();
-    SDL_DestroyTexture(Lambda);
+    //SDL_DestroyTexture(Lambda);
 
     SDL_Vertex vertex_1 = {{100.5, 200.5}, {255, 0, 0, 255}, {1, 1}};
     SDL_Vertex vertex_2 = {{200.5, 100.5}, {0, 255, 0, 255}, {1, 1}};
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
         vertex_1,
         vertex_3
     };
-
+    
     SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
     gp.Xinit_TTF();
     TTF_Font *font= TTF_OpenFont("src/fonts/Sans.ttf",50);
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]){
 
     gp.XdrawTexture(text, renderer, NULL, tprect);
 
-    SDL_DestroyTexture(text);
+    
 
     SDL_Rect frect;
     frect.w = 100;
@@ -72,7 +72,6 @@ int main(int argc, char *argv[]){
     SDL_Rect* fprect = &frect;
 
     gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
-    SDL_DestroyTexture(Flashlight);
 
     s.XinitSound();
     Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
@@ -100,15 +99,28 @@ int main(int argc, char *argv[]){
             std::cout << "Key Pressed" << std::endl;
         }
         }
+        gp.Xwindow_clear(renderer,0,0,0,0);
+        go.setPosition(go.getPosition()[0]+0.01,go.getPosition()[1]);
+        go.Update();
+        go.Render();
 
+        SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
+        gp.XdrawTexture(text, renderer, NULL, tprect);
+        gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
+
+        gp.Xpaint(renderer);
+        //std::cout << go.getPosition()[0] << " " << go.getPosition()[1] << std::endl;
         srcX =srcX + 1;
         std::array<int,3> panning= s.XcalculatePanning2D(100,srcX,srcY,0,0,10000,10000);
-        std::cout << panning[0] << " " << panning[1] << " " <<panning[2] << " " << std::endl;
+        //std::cout << panning[0] << " " << panning[1] << " " <<panning[2] << " " << std::endl;
         s.XsetVolume(ch,panning[0]);
         s.XsetChannelPanning(ch, panning[1],panning[2]);
 
         engine.XTick_Delay(startFrame, tickDelay);
     }
+    SDL_DestroyTexture(text);
+    SDL_DestroyTexture(Flashlight);
+
     s.XquitSound();
     engine.XQuit();
     return 0;

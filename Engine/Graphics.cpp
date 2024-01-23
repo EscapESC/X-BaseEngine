@@ -40,7 +40,6 @@ class Graphics{
 
         SDL_SetRenderDrawColor(rend,r,g,b,a);
         SDL_RenderClear(rend);
-        SDL_RenderPresent(rend);
     }
 
     //Destroys window (What did you expect?)

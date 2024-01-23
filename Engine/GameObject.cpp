@@ -20,18 +20,19 @@ class GameObject{
     }
 
     void Update(){
-
+        ObjectDesRect->x =x;
+        ObjectDesRect->y =y;
     }
 
     void Render(){
         SDL_RenderCopy(ObjectRenderer, ObjectTexture, ObjectSrcRect, ObjectDesRect);
     }
 
-    std::array<int, 2> getPosition(){
+    std::array<float, 2> getPosition(){
         return {x,y};
     }
 
-    void setPosition(int xPos, int yPos){
+    void setPosition(float xPos, float yPos){
         x = xPos;
         y = yPos;
 
@@ -41,14 +42,14 @@ class GameObject{
         return {sizeX, sizeY};
     }
 
-    std::array<int, 3> getVelocity(){
+    std::array<float, 3> getVelocity(){
         return {Xvelocity,Yvelocity,Velocity};
     }
 
     private:
 
-    int x;
-    int y;
+    float x;
+    float y;
 
     int sizeX;
     int sizeY;
@@ -63,5 +64,4 @@ class GameObject{
     SDL_Rect* ObjectSrcRect; 
     SDL_Rect* ObjectDesRect;
     SDL_Renderer* ObjectRenderer;
-
 };
