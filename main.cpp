@@ -19,12 +19,12 @@ int main(int argc, char *argv[]){
     Graphics gp = Graphics();
     Sound s = Sound();
     
-    engine.XInnit(SDL_INIT_EVERYTHING);
-    window = gp.XCreate_Window("X-Base Engine", 800,600, SDL_WINDOW_SHOWN);
-    renderer = gp.XCreate_Renderer(window);
+    engine.Innit(SDL_INIT_EVERYTHING);
+    window = gp.Create_Window("X-Base Engine", 800,600, SDL_WINDOW_SHOWN);
+    renderer = gp.Create_Renderer(window);
     
-    SDL_Texture* Lambda = gp.XLoadTexture("src/Lambda.png", renderer);
-    SDL_Texture* Flashlight = gp.XLoadTexture("src/flashlight.png", renderer);
+    SDL_Texture* Lambda = gp.LoadTexture("src/Lambda.png", renderer);
+    SDL_Texture* Flashlight = gp.LoadTexture("src/flashlight.png", renderer);
     SDL_Rect rect;
     rect.w = 100;
     rect.h = 100;
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
     rect.y = 600/2-100/2;
     SDL_Rect* prect = &rect;
 
-    gp.Xwindow_clear(renderer,0,0,0,0);
+    gp.window_clear(renderer,0,0,0,0);
 
     GameObject go = GameObject();
     go.createGameObject(renderer,Lambda, nullptr,prect);
@@ -50,9 +50,9 @@ int main(int argc, char *argv[]){
     };
     
     SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
-    gp.Xinit_TTF();
+    gp.init_TTF();
     TTF_Font *font= TTF_OpenFont("src/fonts/Sans.ttf",50);
-    SDL_Texture* text = gp.Xtext_Texture(renderer,"HELLO WORLD",font, SDL_Color {255,255,255, 255});
+    SDL_Texture* text = gp.text_Texture(renderer,"HELLO WORLD",font, SDL_Color {255,255,255, 255});
     SDL_Rect trect;
     trect.w = 200;
     trect.h = 50;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[]){
     trect.y = 25;
     SDL_Rect* tprect = &trect;
 
-    gp.XdrawTexture(text, renderer, NULL, tprect);
+    gp.drawTexture(text, renderer, NULL, tprect);
 
     
 
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
     frect.y = 200/2;
     SDL_Rect* fprect = &frect;
 
-    gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
+    gp.drawTexture(Flashlight, renderer,nullptr, fprect);
 
     s.XinitSound();
     Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]){
 
 
 
-    gp.Xpaint(renderer);
+    gp.paint(renderer);
 
     bool quit;
 
@@ -99,16 +99,16 @@ int main(int argc, char *argv[]){
             std::cout << "Key Pressed" << std::endl;
         }
         }
-        gp.Xwindow_clear(renderer,0,0,0,0);
+        gp.window_clear(renderer,0,0,0,0);
         go.setPosition(go.getPosition()[0]+0.01,go.getPosition()[1]);
         go.Update();
         go.Render();
 
         SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
-        gp.XdrawTexture(text, renderer, NULL, tprect);
-        gp.XdrawTexture(Flashlight, renderer,nullptr, fprect);
+        gp.drawTexture(text, renderer, NULL, tprect);
+        gp.drawTexture(Flashlight, renderer,nullptr, fprect);
 
-        gp.Xpaint(renderer);
+        gp.paint(renderer);
         //std::cout << go.getPosition()[0] << " " << go.getPosition()[1] << std::endl;
         srcX =srcX + 1;
         std::array<int,3> panning= s.XcalculatePanning2D(100,srcX,srcY,0,0,10000,10000);
@@ -116,12 +116,12 @@ int main(int argc, char *argv[]){
         s.XsetVolume(ch,panning[0]);
         s.XsetChannelPanning(ch, panning[1],panning[2]);
 
-        engine.XTick_Delay(startFrame, tickDelay);
+        engine.Tick_Delay(startFrame, tickDelay);
     }
     SDL_DestroyTexture(text);
     SDL_DestroyTexture(Flashlight);
 
     s.XquitSound();
-    engine.XQuit();
+    engine.Quit();
     return 0;
 }
