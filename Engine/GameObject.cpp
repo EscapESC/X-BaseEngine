@@ -38,6 +38,10 @@ class GameObject{
 
     }
 
+    void destriy(){
+        
+    }
+
     std::array<int, 2> getSize(){
         return {sizeX, sizeY};
     }
@@ -53,6 +57,8 @@ class GameObject{
 
     int sizeX;
     int sizeY;
+
+    int textureArray;
 
     float Xvelocity;
     float Yvelocity;

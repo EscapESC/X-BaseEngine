@@ -9,6 +9,8 @@ class Graphics{
 
     public:
 
+    
+
     //Generate a Window and return its pointer back;
     SDL_Window* Create_Window(const char* title, int width, int height, int flag){
         SDL_Window *wind = SDL_CreateWindow(title,SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED, width,height, flag);
