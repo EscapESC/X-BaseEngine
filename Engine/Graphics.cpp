@@ -4,12 +4,13 @@
 #include "include\SDL_image.h"
 #include "include\SDL_ttf.h"
 #include <array>
+#include <vector>
 
 class Graphics{
 
     public:
 
-    
+    std::vector<SDL_Texture*> textureArray;
 
     //Generate a Window and return its pointer back;
     SDL_Window* Create_Window(const char* title, int width, int height, int flag){
@@ -30,7 +31,7 @@ class Graphics{
         SDL_Texture* texture = SDL_CreateTextureFromSurface(Renderer, temp);
         if(texture == NULL){std::cout << "text_Texture Error: "<< SDL_GetError() << std::endl;}
         SDL_FreeSurface(temp);
-
+        textureArray.push_back(texture);
         return texture;
     }
 
@@ -68,5 +69,12 @@ class Graphics{
     void paint(SDL_Renderer* rend){
 
         SDL_RenderPresent(rend);
+    }
+
+    void quit(){
+        for(int i = 0; i < textureArray.size(); i++){
+            SDL_DestroyTexture(textureArray[i]);
+        }
+        delete this;
     }
 };

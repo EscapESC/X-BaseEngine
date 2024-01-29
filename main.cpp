@@ -6,6 +6,7 @@
 #include "Engine/Sound.cpp"
 #include "Engine\include\SDL_mixer.h"
 #include "Engine\GameObject.cpp"
+#include "Engine\ObjectManager.cpp"
 #include <array>
 
     SDL_Window *window;
@@ -15,6 +16,7 @@
     const int tickDelay = 1000 / FPS;
 
 int main(int argc, char *argv[]){
+    ObjectManager om = ObjectManager();
     Engine engine = Engine();
     Graphics gp = Graphics();
     Sound s = Sound();
@@ -34,9 +36,8 @@ int main(int argc, char *argv[]){
 
     gp.window_clear(renderer,0,0,0,0);
 
-    GameObject go = GameObject();
-    go.createGameObject(renderer,Lambda, nullptr,prect);
-    go.Render();
+    GameObject* go = om.createObject(renderer,Lambda, nullptr,prect);
+    go->Render();
     //SDL_DestroyTexture(Lambda);
 
     SDL_Vertex vertex_1 = {{100.5, 200.5}, {255, 0, 0, 255}, {1, 1}};
@@ -100,9 +101,9 @@ int main(int argc, char *argv[]){
         }
         }
         gp.window_clear(renderer,0,0,0,0);
-        go.setPosition(go.getPosition()[0]+0.01,go.getPosition()[1]);
-        go.Update();
-        go.Render();
+        go->setPosition(go->getPosition()[0]+0.01,go->getPosition()[1]);
+        go->Update();
+        go->Render();
 
         SDL_RenderGeometry(renderer, NULL,vertices, 3, NULL, 0);
         gp.drawTexture(text, renderer, NULL, tprect);
@@ -118,9 +119,8 @@ int main(int argc, char *argv[]){
 
         engine.Tick_Delay(startFrame, tickDelay);
     }
-    SDL_DestroyTexture(text);
-    SDL_DestroyTexture(Flashlight);
-
+    om.quit();
+    gp.quit();
     s.XquitSound();
     engine.Quit();
     return 0;

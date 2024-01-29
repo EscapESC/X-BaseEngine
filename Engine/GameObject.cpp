@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "include\SDL.h"
 #include <array>
@@ -38,8 +39,8 @@ class GameObject{
 
     }
 
-    void destriy(){
-        
+    void Destroy(){
+        delete this;
     }
 
     std::array<int, 2> getSize(){
@@ -57,8 +58,6 @@ class GameObject{
 
     int sizeX;
     int sizeY;
-
-    int textureArray;
 
     float Xvelocity;
     float Yvelocity;
