@@ -33,6 +33,7 @@ class ObjectManager{
         for(int i = 0; i < objectList.size();i++){
             objectList[i]->Destroy();
         }
+        return 0;
     }
 
 };

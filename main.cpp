@@ -74,9 +74,9 @@ int main(int argc, char *argv[]){
 
     gp.drawTexture(Flashlight, renderer,nullptr, fprect);
 
-    s.XinitSound();
-    Mix_Chunk* sound = s.XloadSound("src/sound.mp3");
-    int ch = s.XplaySound(sound, -1,100, -1);
+    s.initSound();
+    Mix_Chunk* sound = s.loadSound("src/sound.mp3");
+    int ch = s.playSound(sound, -1,100, -1);
 
 
 
@@ -112,16 +112,16 @@ int main(int argc, char *argv[]){
         gp.paint(renderer);
         //std::cout << go.getPosition()[0] << " " << go.getPosition()[1] << std::endl;
         srcX =srcX + 1;
-        std::array<int,3> panning= s.XcalculatePanning2D(100,srcX,srcY,0,0,10000,10000);
+        std::array<int,3> panning= s.calculatePanning2D(100,srcX,srcY,0,0,10000,10000);
         //std::cout << panning[0] << " " << panning[1] << " " <<panning[2] << " " << std::endl;
-        s.XsetVolume(ch,panning[0]);
-        s.XsetChannelPanning(ch, panning[1],panning[2]);
+        s.setVolume(ch,panning[0]);
+        s.setChannelPanning(ch, panning[1],panning[2]);
 
         engine.Tick_Delay(startFrame, tickDelay);
     }
     om.quit();
     gp.quit();
-    s.XquitSound();
+    s.quitSound();
     engine.Quit();
     return 0;
 }
