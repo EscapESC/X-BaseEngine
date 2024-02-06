@@ -13,7 +13,6 @@
     SDL_Renderer *renderer;
 
     const int FPS = 60;
-    const int tickDelay = 1000 / FPS;
 
 int main(int argc, char *argv[]){
     ObjectManager om = ObjectManager();
@@ -25,8 +24,8 @@ int main(int argc, char *argv[]){
     window = gp.Create_Window("X-Base Engine", 800,600, SDL_WINDOW_SHOWN);
     renderer = gp.Create_Renderer(window);
     
-    SDL_Texture* Lambda = gp.LoadTexture("src/Lambda.png", renderer);
-    SDL_Texture* Flashlight = gp.LoadTexture("src/flashlight.png", renderer);
+    SDL_Texture* Lambda = gp.loadTexture("src/Lambda.png", renderer);
+    SDL_Texture* Flashlight = gp.loadTexture("src/flashlight.png", renderer);
     SDL_Rect rect;
     rect.w = 100;
     rect.h = 100;
@@ -112,12 +111,12 @@ int main(int argc, char *argv[]){
         gp.paint(renderer);
         //std::cout << go.getPosition()[0] << " " << go.getPosition()[1] << std::endl;
         srcX =srcX + 1;
-        std::array<int,3> panning= s.calculatePanning2D(100,srcX,srcY,0,0,10000,10000);
+        std::array<float,3> panning= s.calculatePanning2D(100,srcX,srcY,0,0,10000,10000);
         //std::cout << panning[0] << " " << panning[1] << " " <<panning[2] << " " << std::endl;
         s.setVolume(ch,panning[0]);
         s.setChannelPanning(ch, panning[1],panning[2]);
 
-        engine.Tick_Delay(startFrame, tickDelay);
+        engine.Tick_Delay(startFrame, FPS);
     }
     om.quit();
     gp.quit();

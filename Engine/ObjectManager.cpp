@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include "include\SDL.h"
 #include <vector>
@@ -19,6 +20,18 @@ class ObjectManager{
         x->createGameObject(renderer, texture, srcRect, desRect);
         addObject(x);
         return x;
+    }
+
+    void updateAll(){
+        for(int i = 0; i<objectList.size();i++){
+            objectList[i]->Update();
+        }
+    }
+
+    void renderAll(){
+        for(int i = 0; i<objectList.size();i++){
+            objectList[i]->Render();
+        }
     }
 
     int deleteObject(GameObject* x){
