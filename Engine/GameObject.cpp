@@ -279,6 +279,7 @@ class Audio2DComponent : public Component{
     }
 };
 
+//Planned feature
 class LightComponent : public Component{
     GameObject* parentObject;
 
