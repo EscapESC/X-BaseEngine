@@ -20,6 +20,7 @@ class Engine{
      */
     int Innit(Uint32 init) {
         scale = 1;
+        
         // Need to call with SDL_INIT_EVERYTHING or any of its varyants
         int rtn = SDL_Init(init);
         if(rtn!=0){std::cout<<"Innit Error: "<<SDL_GetError()<<std::endl;}
