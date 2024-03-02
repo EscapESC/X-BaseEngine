@@ -11,3 +11,5 @@ X-Base Engine is a C++ library created by Václav Rada aiming to make developmen
 - [ ] Better velocity system
 - [ ] Triggers and interacts
 - [ ] Mouse input interupts 
+- [ ] Header files
+- [ ] Building DLL files
