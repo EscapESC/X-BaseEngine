@@ -1,6 +1,9 @@
 #pragma once
 #include <iostream>
 #include "include\SDL.h"
+#include "Engine.cpp"
+#include "include\SDL_mixer.h"
+#include "Sound.cpp"
 #include <array>
 #include <vector>
 #include <algorithm>
