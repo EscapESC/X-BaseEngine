@@ -8,6 +8,8 @@ class Engine{
     public:
 
     static float scale;
+    
+    Uint64 LastDeltaTimeUpdate = 0;
 
     void setScale(float scaleFactor){
         scale = scaleFactor;
@@ -49,6 +51,14 @@ class Engine{
     void KeyUpUpdate(SDL_Event event){
         auto position = std::find(keyboardInput.begin(),keyboardInput.end(),event.key.keysym.scancode);
         keyboardInput.erase(position);
+    }
+
+    double DeltaTime(){
+        Uint64 NOW = SDL_GetPerformanceCounter();
+        LastDeltaTimeUpdate = NOW;
+        NOW = SDL_GetPerformanceCounter();
+
+        return (double)((NOW - LastDeltaTimeUpdate)*1000 / (double)SDL_GetPerformanceFrequency() );
     }
 
     //Calls SDL_Quit function, which cleans up all initialized sub systems.

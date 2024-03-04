@@ -11,7 +11,7 @@ class Component{
     public:
     virtual int GetType() = 0;
     virtual void Innit(GameObject* gameObject){};
-    virtual void Update(){};
+    virtual void Update(float deltaTime){};
     virtual void Destroy(){};
 };;
 
@@ -50,9 +50,9 @@ class GameObject{
         ObjectTexture = texture;
     }
 
-    void Update(){
+    void Update(float deltaTime){
         for(int i = 0; i<components.size();i++){
-            components[i]->Update();
+            components[i]->Update(deltaTime);
         }
         if(parentObject){
             ObjectDesRect->x = x+parentObject->ObjectDesRect->x;
@@ -141,7 +141,7 @@ class PhysicsComponent : public Component{
 
     int GetType() override{return 1;}
 
-    void Update() override{
+    void Update(float deltaTime) override{
         xVelocity = xVelocity*(1-xDrag);
         yVelocity = yVelocity*(1-yDrag);
 
@@ -172,7 +172,7 @@ class PhysicsComponent : public Component{
 class RigidbodyComponent : public Component{
 
     GameObject* parentObject;
-    void Update() override{}
+    void Update(float deltaTime) override{}
     void Innit (GameObject* gameObject)override{parentObject=gameObject;}
 
     int GetType() override{return 2;}
@@ -194,7 +194,7 @@ class AudioComponent : public Component{
 
     int GetType() override{return 3;}
 
-    void Update() override{
+    void Update(float deltaTime) override{
         
     }
 
@@ -242,7 +242,7 @@ class Audio2DComponent : public Component{
 
     int GetType() override{return 3;}
 
-    void Update() override{
+    void Update(float deltaTime) override{
         if(playing){
         Sound s = Sound();
         std::array<float,3> panning = s.calculatePanning2D(volume,parentObject->x+parentObject->sizeX/2,parentObject->y+parentObject->sizeY/2,reciver->x+reciver->sizeX/2,reciver->y+reciver->sizeY/2,area,falloff);
@@ -285,7 +285,7 @@ class LightComponent : public Component{
 
     int GetType() override{return 5;}
 
-    void Update() override{}
+    void Update(float deltaTime) override{}
     void Innit (GameObject* gameObject)override{parentObject=gameObject;}
     
     void Destroy() override{

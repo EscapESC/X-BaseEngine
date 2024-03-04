@@ -22,9 +22,9 @@ class ObjectManager{
         return x;
     }
 
-    void updateAll(){
+    void updateAll(float deltaTime){
         for(int i = 0; i<objectList.size();i++){
-            objectList[i]->Update();
+            objectList[i]->Update(deltaTime);
         }
     }
 

@@ -105,6 +105,8 @@ int main(int argc, char *argv[]){
                 engine.KeyUpUpdate(event);
             }
         }
+        
+        float deltaTime = engine.DeltaTime();
 
         //Custom input handling
         if(std::find(engine.keyboardInput.begin(), engine.keyboardInput.end(), SDL_SCANCODE_W)!= engine.keyboardInput.end()){
@@ -124,7 +126,7 @@ int main(int argc, char *argv[]){
 
         //Updating engine cycle
         graphics.window_clear(renderer,0,0,0,0);
-        objectManger.updateAll();
+        objectManger.updateAll(deltaTime);
         objectManger.renderAll();
         graphics.paint(renderer);
         //Tick delay
