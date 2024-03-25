@@ -24,6 +24,8 @@ class GameObject{
 
     GameObject* parentObject;
 
+    std::string name;
+
     int health;
     bool visible = true;
 
@@ -128,6 +130,7 @@ class GameObject{
         delete this;
     }
 };
+
 //Component for automatic calculations of basic realtime 2D physics
 class PhysicsComponent : public Component{
     public:

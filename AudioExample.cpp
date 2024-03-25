@@ -1,12 +1,12 @@
 #include <iostream>
 #include "Engine/Engine.cpp"
-#include "Engine\include\SDL.h"
+#include "Engine/include\SDL.h"
 #include "Engine/Graphics.cpp"
-#include "Engine\include\SDL_ttf.h"
+#include "Engine/include\SDL_ttf.h"
 #include "Engine/Sound.cpp"
-#include "Engine\include\SDL_mixer.h"
-#include "Engine\GameObject.cpp"
-#include "Engine\ObjectManager.cpp"
+#include "Engine/include\SDL_mixer.h"
+#include "Engine/GameObject.cpp"
+#include "Engine/ObjectManager.cpp"
 #include <array>
 #include <thread>
 

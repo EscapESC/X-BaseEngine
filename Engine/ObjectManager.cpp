@@ -22,6 +22,15 @@ class ObjectManager{
         return x;
     }
 
+    GameObject* findObjectByName(std::string name){
+        for(int i = 0; i < objectList.size(); i++){
+            if(objectList[i]->name == name)
+            {
+                return objectList[i];
+            }
+        }
+    }
+
     void updateAll(float deltaTime){
         for(int i = 0; i<objectList.size();i++){
             objectList[i]->Update(deltaTime);
