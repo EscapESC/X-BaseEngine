@@ -37,9 +37,9 @@ class ObjectManager{
         }
     }
 
-    void renderAll(){
+    void renderAll(float cameraX, float cameraY, float zoom){
         for(int i = 0; i<objectList.size();i++){
-            objectList[i]->Render();
+            objectList[i]->Render(cameraX,cameraY, zoom);
         }
     }
 

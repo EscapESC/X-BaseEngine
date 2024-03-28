@@ -10,6 +10,8 @@
 
 class GameObject;
 
+class CameraComponent;
+
 class Component{
     public:
     virtual int GetType() = 0;
@@ -19,6 +21,8 @@ class Component{
 };;
 
 class GameObject{
+
+    SDL_Rect* ObjectDesRect;
 
     public:
 
@@ -32,12 +36,11 @@ class GameObject{
     float x;
     float y;
 
-    int sizeX;
-    int sizeY;
+    int w;
+    int h;
 
     SDL_Texture* ObjectTexture;
     SDL_Rect* ObjectSrcRect; 
-    SDL_Rect* ObjectDesRect;
     SDL_Renderer* ObjectRenderer;
 
     std::vector<Component*> components;
@@ -49,8 +52,8 @@ class GameObject{
         x = desRect->x;
         y = desRect->y;
 
-        sizeX = desRect->w;
-        sizeY = desRect->h;
+        w = desRect->w;
+        h = desRect->h;
         ObjectRenderer = renderer;
         ObjectTexture = texture;
     }
@@ -60,23 +63,19 @@ class GameObject{
             components[i]->Update(deltaTime);
         }
         if(parentObject){
-            ObjectDesRect->x = x+parentObject->ObjectDesRect->x;
-            ObjectDesRect->y = y+parentObject->ObjectDesRect->y;
-        }
-        else{
-        ObjectDesRect->x = x;
-        ObjectDesRect->y = y;
+            x = x+parentObject->x;
+            y = y+parentObject->y;
         }
     }
 
-    void Render(){
+    void Render(float cameraX, float cameraY, float zoom){
         Engine engine = Engine();
         if(visible){
         SDL_Rect scaleRec;
-        scaleRec.x = ObjectDesRect->x*engine.scale;
-        scaleRec.y = ObjectDesRect->y*engine.scale;
-        scaleRec.w = ObjectDesRect->w*engine.scale;
-        scaleRec.h = ObjectDesRect->h*engine.scale;
+        scaleRec.x = (x-cameraX)*engine.scale;
+        scaleRec.y = (y-cameraY)*engine.scale;
+        scaleRec.w = w*zoom*engine.scale;
+        scaleRec.h = h*zoom*engine.scale;
         SDL_RenderCopy(ObjectRenderer, ObjectTexture, ObjectSrcRect, &scaleRec);
         }
     }
@@ -89,14 +88,11 @@ class GameObject{
     void setPosition(float xPos, float yPos){
         x = xPos;
         y = yPos;
-
-        x = ObjectDesRect->x;
-        y = ObjectDesRect->y;
     }
 
     //Returns float array with object dimencions.
     std::array<int, 2> getSize(){
-        return {sizeX, sizeY};
+        return {w, h};
     }
 
     int addComponent(Component* AddComponent){
@@ -131,167 +127,22 @@ class GameObject{
     }
 };
 
-//Component for automatic calculations of basic realtime 2D physics
-class PhysicsComponent : public Component{
-    public:
-    GameObject* parentObject;
-    float xVelocity;
-    float yVelocity;
-    float velocity;
+class CameraComponent : public Component{
 
-    float mass; // Not implemented yet
-    float xDrag;
-    float yDrag;
-    float xMaxVelocity = -1;
-    float yMaxVelocity = -1;
-
-    int GetType() override{return 1;}
-
-    void Update(float deltaTime) override{
-        xVelocity = xVelocity*(1-xDrag);
-        yVelocity = yVelocity*(1-yDrag);
-
-        if(xVelocity>xMaxVelocity&&xMaxVelocity!= -1){xVelocity = xMaxVelocity;}
-        if(yVelocity>yMaxVelocity&&yMaxVelocity!= -1){yVelocity = yMaxVelocity;}
-        if(xVelocity<-xMaxVelocity&&xMaxVelocity!= -1){xVelocity = -xMaxVelocity;}
-        if(yVelocity<-yMaxVelocity&&yMaxVelocity!= -1){yVelocity = -yMaxVelocity;}
-        parentObject->x = parentObject->x+xVelocity;
-        parentObject->y = parentObject->y+yVelocity;
-    }
-    void Innit (GameObject* gameObject)override{parentObject=gameObject;}
-
-    std::array<float, 3> getVelocity(){
-        return {xVelocity,yVelocity,velocity};
-    }
-
-    void setVelocity(float xInputVelocity,float yInputVelocity){
-        xVelocity = xInputVelocity;
-        yVelocity = yInputVelocity;
-    }
-
-    void Destroy() override{
-        delete this;
-    }
-
-};
-//WIP
-class RigidbodyComponent : public Component{
-
-    GameObject* parentObject;
-    void Update(float deltaTime) override{}
-    void Innit (GameObject* gameObject)override{parentObject=gameObject;}
-
-    int GetType() override{return 2;}
-
-    void Destroy() override{
-        delete this;
-    }
-};
-
-//Audio component can play sounds with set volume and loops (greate for ambient sounds);
-class AudioComponent : public Component{
-    public:
-    GameObject* parentObject;
-    bool playing;
-    int loops;
-    int volume;
-    int channelNumber;
-    Mix_Chunk* sound;
-
-    int GetType() override{return 3;}
-
-    void Update(float deltaTime) override{
-        
-    }
-
-    int playSound(Mix_Chunk* soundTrack, int loop, int channel,int fadeInMs){
-        channelNumber = Mix_FadeInChannel(channel, soundTrack, loop, fadeInMs);
-        if(channelNumber != -1){playing == true;}
-        return channelNumber;
-    }
-
-    void pauseSound(){
-        Mix_Pause(channelNumber);
-    }
-
-    void presumeSound(){
-        Mix_Resume(channelNumber);
-    }
-
-    int stopSound(){
-        return Mix_HaltChannel(channelNumber);
-    }
-
-    void Innit (GameObject* gameObject){parentObject=gameObject;}
-
-    void Destroy() override{
-        delete this;
-    }
-};
-
-//Audio component with 2D panning and volume falloff
-class Audio2DComponent : public Component{
-    public:
-    GameObject* parentObject;
-    bool playing;
-    int loops;
-    int volume = 10;
-    int channelNumber;
-    Mix_Chunk* sound;
-
-    GameObject* reciver;
-    float xCamera;
-    float yCamera;
-
-    float area = 100;
-    float falloff = 200;
-
-    int GetType() override{return 3;}
-
-    void Update(float deltaTime) override{
-        if(playing){
-        Sound s = Sound();
-        std::array<float,3> panning = s.calculatePanning2D(volume,parentObject->x+parentObject->sizeX/2,parentObject->y+parentObject->sizeY/2,reciver->x+reciver->sizeX/2,reciver->y+reciver->sizeY/2,area,falloff);
-        s.setChannelPanning(channelNumber,panning[1],panning[2]);
-        Mix_Volume(channelNumber, (MIX_MAX_VOLUME * panning[0])/100);
-        }
-    }
-
-    int playSound(Mix_Chunk* soundTrack, int loop, int channel){
-        channelNumber = Mix_PlayChannel(channel, soundTrack, loop);
-        if(channelNumber != -1){playing = true;}
-        return channelNumber;
-    }
-
-    void pauseSound(){
-        playing = false;
-        Mix_Pause(channelNumber);
-    }
-
-    void presumeSound(){
-        playing = true;
-        Mix_Resume(channelNumber);
-    }
-
-    int stopSound(){
-        playing = false;
-        return Mix_HaltChannel(channelNumber);
-    }
-
-    void Innit (GameObject* gameObject){parentObject=gameObject;}
-
-    void Destroy() override{
-        delete this;
-    }
-};
-
-//Planned feature
-class LightComponent : public Component{
+    public: 
     GameObject* parentObject;
 
-    int GetType() override{return 5;}
+    int x = 0;
+    int y = 0;
 
-    void Update(float deltaTime) override{}
+    float offsetX = 0;
+    float offsetY = 0;
+
+    float zoom = 0;
+
+    int GetType() override{return 99;}
+
+    void Update(float deltaTime) override{x = parentObject->x+offsetX; y = parentObject->y+offsetY;}
     void Innit (GameObject* gameObject)override{parentObject=gameObject;}
     
     void Destroy() override{

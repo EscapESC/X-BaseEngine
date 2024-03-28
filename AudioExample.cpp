@@ -7,6 +7,7 @@
 #include "Engine/include\SDL_mixer.h"
 #include "Engine/GameObject.cpp"
 #include "Engine/ObjectManager.cpp"
+#include "Engine/Components.cpp"
 #include <array>
 #include <thread>
 
@@ -85,6 +86,13 @@ int main(int argc, char *argv[]){
     speakerAudio2D->playSound(speakerSound, -1, -1);
     speaker->addComponent(speakerAudio2D);
 
+    //Camera
+    CameraComponent* camera = new CameraComponent();
+    camera->offsetX=-160+16;
+    camera->offsetY=-90+16;
+    player->addComponent(camera);
+    camera->Innit(player);
+
     //Essentials for the gameloop
     Uint32 startFrame = SDL_GetTicks();
     bool quit = false;
@@ -127,7 +135,7 @@ int main(int argc, char *argv[]){
         //Updating engine cycle
         graphics.window_clear(renderer,0,0,0,0);
         objectManger.updateAll(deltaTime);
-        objectManger.renderAll();
+        objectManger.renderAll(camera->x, camera->y,1.0);
         graphics.paint(renderer);
         //Tick delay
         engine.Tick_Delay(startFrame, TPS);
