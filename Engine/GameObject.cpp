@@ -14,11 +14,12 @@ class CameraComponent;
 
 class Component{
     public:
+    GameObject* parentObject;
     virtual int GetType() = 0;
     virtual void Innit(GameObject* gameObject){};
     virtual void Update(float deltaTime){};
     virtual void Destroy(){};
-};;
+};
 
 class GameObject{
 
@@ -27,6 +28,8 @@ class GameObject{
     public:
 
     GameObject* parentObject;
+
+    int ID;
 
     std::string name;
 
@@ -111,6 +114,8 @@ class GameObject{
                 return components[i];
             }
         }
+
+        return nullptr;
     }
 
     int removeComponent(Component* RemoveComponent){
@@ -143,6 +148,21 @@ class CameraComponent : public Component{
     int GetType() override{return 99;}
 
     void Update(float deltaTime) override{x = parentObject->x+offsetX; y = parentObject->y+offsetY;}
+    void Innit (GameObject* gameObject)override{parentObject=gameObject;}
+    
+    void Destroy() override{
+        delete this;
+    }
+};
+
+class LightComponent : public Component{
+
+    public:
+    SDL_Texture* lightTexture;
+
+    int GetType() override{return 69;}
+
+    void Update(float deltaTime) override{}
     void Innit (GameObject* gameObject)override{parentObject=gameObject;}
     
     void Destroy() override{

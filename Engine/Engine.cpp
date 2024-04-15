@@ -18,7 +18,7 @@ class Engine{
     std::vector<int> keyboardInput;
     /** Initializes SDL 
      * \param init if a SDL_INIT_* flag for initalizing diffrent systems. SDL_INIT_EVERYTHING - to init everything
-     * \returns 0 on succes -1 on error
+     * \returns 0 on succes, -1 on error
      */
     int Innit(Uint32 init) {
         scale = 1;
