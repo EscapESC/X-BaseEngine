@@ -20,6 +20,7 @@ class Engine{
      * \param init if a SDL_INIT_* flag for initalizing diffrent systems. SDL_INIT_EVERYTHING - to init everything
      * \returns 0 on succes, -1 on error
      */
+
     int Innit(Uint32 init) {
         scale = 1;
         
@@ -33,14 +34,17 @@ class Engine{
      * \param startFrame is a return value of SDL_getTicks(), and is a frame count from the start of the program.
      * \param frameDelay is the set ammount of delays before resuming.
     */
-    void Tick_Delay(Uint32 startFrame, int FPS){
-        float frameDelay = 1000/FPS;
-        float frameNow = SDL_GetTicks() - startFrame;
+    void Tick_Delay(Uint32 *startFrame, int FPS){
+        Uint32 now;
 
-        if (frameDelay > frameNow){
-            SDL_Delay(frameDelay - frameNow);
+        now = SDL_GetTicks();
+        if(*startFrame >= now){}
+        else{
+            SDL_Delay(now -*startFrame);
         }
+        *startFrame+=FPS;
     }
+
 
     void KeyDownUpdate(SDL_Event event){
         if(std::find(keyboardInput.begin(),keyboardInput.end(),event.key.keysym.scancode) == keyboardInput.end()){
@@ -55,10 +59,10 @@ class Engine{
 
     double DeltaTime(){
         Uint64 NOW = SDL_GetPerformanceCounter();
+        Uint64 temp = NOW - LastDeltaTimeUpdate;
         LastDeltaTimeUpdate = NOW;
-        NOW = SDL_GetPerformanceCounter();
 
-        return (double)((NOW - LastDeltaTimeUpdate)*1000 / (double)SDL_GetPerformanceFrequency() );
+        return (double)((temp)*1000 / (double)SDL_GetPerformanceFrequency() );
     }
 
     //Calls SDL_Quit function, which cleans up all initialized sub systems.

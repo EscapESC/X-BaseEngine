@@ -61,6 +61,8 @@ class Graphics{
 
         SDL_SetRenderDrawColor(rend,r,g,b,a);
         SDL_RenderClear(rend);
+        SDL_SetRenderTarget(rend, screenTexture);
+        SDL_RenderClear(rend);
     }
 
     /** Calls SDL_DestroyWindow() function with the provided window pointer.
@@ -106,8 +108,16 @@ class Graphics{
     /** Paints the buffered image of the renderer to the screen, using SDL_RednerPresent() function.
      * \param rend SDL_Renderer pointer.
     */
-    void paint(SDL_Renderer* rend){
+    void paint(SDL_Renderer* rend, int width, int height){
+        SDL_SetRenderTarget(rend, NULL);
+        SDL_Rect tmprect;
+        tmprect.x = 0;
+        tmprect.y = 0;
+        tmprect.w = width;
+        tmprect.h = height;
+        SDL_RenderCopy(rend, screenTexture, nullptr, &tmprect);
         SDL_RenderPresent(rend);
+        SDL_SetRenderTarget(rend, screenTexture);
     }
 
     //Destroys the textures in the global textureArray.

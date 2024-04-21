@@ -38,6 +38,7 @@ class GameObject{
 
     float x;
     float y;
+    int layer = 0;
 
     int w;
     int h;
@@ -109,7 +110,7 @@ class GameObject{
     }
 
     Component* findComponent(int type){
-        for(int i; i<components.size();i++){
+        for(int i = 0; i<components.size();i++){
             if(components[i]->GetType()==type){
                 return components[i];
             }
@@ -158,7 +159,18 @@ class CameraComponent : public Component{
 class LightComponent : public Component{
 
     public:
+    bool visible = true;
+
     SDL_Texture* lightTexture;
+    GameObject* parentObject;
+
+    int w;
+    int h;
+
+    float offsetX;
+    float offsetY;
+
+    SDL_Rect* LightSrcRect; 
 
     int GetType() override{return 69;}
 

@@ -38,6 +38,8 @@ int main(int argc, char *argv[]){
     //Load assets
     SDL_Texture* playerTexture = graphics.loadTexture("src/Lambda.png", renderer);
     SDL_Texture* speakertexture = graphics.loadTexture("src/speaker.png", renderer);
+    SDL_Texture* lightTexture = graphics.loadTexture("src/flashlight2.png", renderer);
+    SDL_Texture* lightBulb = graphics.loadTexture("src/lightbulb.png", renderer);
     Mix_Chunk* speakerSound = sound.loadSound("src/sound.mp3");
     // . . . 
 
@@ -85,6 +87,25 @@ int main(int argc, char *argv[]){
     speakerAudio2D->falloff = 200;
     speakerAudio2D->playSound(speakerSound, -1, -1);
     speaker->addComponent(speakerAudio2D);
+    
+    //LightBulb
+
+    SDL_Rect lightRect;
+    lightRect.w = 16;
+    lightRect.h = 16;
+    lightRect.x = 0;
+    lightRect.y = 74;
+    SDL_Rect* lightPtr = &lightRect;
+
+    GameObject* lightObject = objectManger.createObject(renderer, lightBulb, nullptr, lightPtr);
+    LightComponent* lightComp = new LightComponent();
+    lightComp->Innit(lightObject);
+    lightComp->w = 64;
+    lightComp->h = 64;
+    lightComp->offsetX = -16-8;
+    lightComp->offsetY = -16-8;
+    lightComp->lightTexture = lightTexture;
+    lightObject->addComponent(lightComp);
 
     //Camera
     CameraComponent* camera = new CameraComponent();
@@ -96,7 +117,7 @@ int main(int argc, char *argv[]){
     //Essentials for the gameloop
     Uint32 startFrame = SDL_GetTicks();
     bool quit = false;
-    
+
     //The game loop
     while(!quit){
         SDL_Event event;
@@ -133,12 +154,13 @@ int main(int argc, char *argv[]){
         }
 
         //Updating engine cycle
-        graphics.window_clear(renderer,0,0,0,0);
+        graphics.window_clear(renderer,10,10,10,155);
         objectManger.updateAll(deltaTime);
         objectManger.renderAll(camera->x, camera->y,1.0);
-        graphics.paint(renderer);
+        objectManger.renderLights({0x0,0x0,0x0,200},renderer, 1920,1080, camera->x, camera->y, 1.0);
+        graphics.paint(renderer,1920,1080);
         //Tick delay
-        engine.Tick_Delay(startFrame, TPS);
+        engine.Tick_Delay(&startFrame, TPS);
     }
 
     framequit = true;
