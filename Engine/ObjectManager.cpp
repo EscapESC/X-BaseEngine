@@ -33,26 +33,18 @@ class ObjectManager{
         }
     }
 
-    /** Sorts the objectList by layers specified in the layers[] list using the z-index of the objects. !WARNING! - ANY UNSORTED OBJECT WILL CAUSE A MEMORY LEAK.
-    * \param layers a list of layers which will be recognized and sorted.
+    static bool compareByZIndex(GameObject* a, GameObject* b){
+        return a->z < b->z;
+    }
+
+    /** Sorts the objectList by z index, for the correct rendering order.
     */
-    void sortLayers(std::vector<int> layers){
+    void sortZindex(){
 
         std::vector<GameObject*> bufferList = objectList;
         std::vector<GameObject*> tempList;
-        for(int l = 0; layers.size() > l ; l++){
 
-            for(int i = 0; bufferList.size() > i ; i++){
-                if (bufferList[i]->layer == layers[l]){
-                    tempList.push_back(bufferList[i]);
-                    bufferList.erase(bufferList.begin() + i);
-                    i--;
-                }                
-            }
-
-        }
-
-        objectList = tempList;
+        std::sort(objectList.begin(), objectList.end(), compareByZIndex);
     }
 
     void updateAll(float deltaTime){

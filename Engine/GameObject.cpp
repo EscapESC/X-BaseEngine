@@ -38,7 +38,7 @@ class GameObject{
 
     float x;
     float y;
-    int layer = 0;
+    float z;
 
     int w;
     int h;
