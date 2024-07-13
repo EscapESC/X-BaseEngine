@@ -118,6 +118,8 @@ int main(int argc, char *argv[]){
     Uint32 startFrame = SDL_GetTicks();
     bool quit = false;
 
+    objectManger.sortZindex();
+
     //The game loop
     while(!quit){
         SDL_Event event;

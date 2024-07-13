@@ -40,10 +40,6 @@ class ObjectManager{
     /** Sorts the objectList by z index, for the correct rendering order.
     */
     void sortZindex(){
-
-        std::vector<GameObject*> bufferList = objectList;
-        std::vector<GameObject*> tempList;
-
         std::sort(objectList.begin(), objectList.end(), compareByZIndex);
     }
 
