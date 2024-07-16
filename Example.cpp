@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
     renderer = graphics.Create_Renderer(window);
 
     //Load assets
-    SDL_Texture* playerTexture = graphics.loadTexture("src/Lambda.png", renderer);
+    SDL_Texture* playerTexture = graphics.loadTexture("src/speaker.png", renderer);
     SDL_Texture* speakertexture = graphics.loadTexture("src/speaker.png", renderer);
     SDL_Texture* lightTexture = graphics.loadTexture("src/flashlight2.png", renderer);
     SDL_Texture* lightBulb = graphics.loadTexture("src/lightbulb.png", renderer);
@@ -54,12 +54,18 @@ int main(int argc, char *argv[]){
     //Create game objects
     GameObject* player = objectManger.createObject(renderer,playerTexture,nullptr,playerRect);
     PhysicsComponent* playerPhysicsComponent = new PhysicsComponent();
+    playerPhysicsComponent->colisionBox=true;
     playerPhysicsComponent->Innit(player);
     playerPhysicsComponent->xDrag = 0.005;
     playerPhysicsComponent->yDrag = 0.005;
     playerPhysicsComponent->xMaxVelocity = 0.1;
     playerPhysicsComponent->yMaxVelocity = 0.1;
+    playerPhysicsComponent->objectList = &objectManger.objectList;
+    playerPhysicsComponent->dynamicCollision =true;
+    playerPhysicsComponent->colliderSizeX=32;
+    playerPhysicsComponent->colliderSizeY=32;
     player->addComponent(playerPhysicsComponent);
+    
 
     //Speaker Object Rect
     SDL_Rect speakerrect;
@@ -67,17 +73,21 @@ int main(int argc, char *argv[]){
     speakerrect.h = 32;
     speakerrect.x = 144;
     speakerrect.y = 74;
-    SDL_Rect* pSpeakRect = &speakerrect;
 
     //Speaker GameObject
-    GameObject* speaker = objectManger.createObject(renderer,speakertexture,nullptr, pSpeakRect);
+    GameObject* speaker = objectManger.createObject(renderer,speakertexture,nullptr, &speakerrect);
     //Speaker physics component - Useless for now
     PhysicsComponent* speakerPhysComponent = new PhysicsComponent();
+    speakerPhysComponent->colisionBox=true;
     speakerPhysComponent->Innit(speaker);
     speakerPhysComponent->xDrag = 0.005;
     speakerPhysComponent->yDrag = 0.005;
     speakerPhysComponent->xMaxVelocity = 0.1;
     speakerPhysComponent->yMaxVelocity = 0.1;
+    speakerPhysComponent->objectList = &objectManger.objectList;
+    speakerPhysComponent->dynamicCollision = false;
+    speakerPhysComponent->colliderSizeX=32;
+    speakerPhysComponent->colliderSizeY=32;
     speaker->addComponent(speakerPhysComponent);
     //Speaker audio component
     Audio2DComponent* speakerAudio2D = new Audio2DComponent();

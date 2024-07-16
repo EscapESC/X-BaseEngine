@@ -16,16 +16,52 @@ class PhysicsComponent : public Component{
     float xMaxVelocity = -1;
     float yMaxVelocity = -1;
 
+    bool colisionBox;
+    int collisionOffsetX;
+    int collisionOffsetY;
+    int colliderSizeX;
+    int colliderSizeY;
+
+    bool dynamicCollision;
+    bool solid = true;
+
+    std::vector<GameObject*> *objectList;
+
     int GetType() override{return 1;}
 
     void Update(float deltaTime) override{
-        xVelocity = xVelocity*(1-xDrag);
-        yVelocity = yVelocity*(1-yDrag);
+        xVelocity = xVelocity*(1-deltaTime*xDrag);
+        yVelocity = yVelocity*(1-deltaTime*yDrag);
 
         if(xVelocity>xMaxVelocity&&xMaxVelocity!= -1){xVelocity = xMaxVelocity;}
         if(yVelocity>yMaxVelocity&&yMaxVelocity!= -1){yVelocity = yMaxVelocity;}
         if(xVelocity<-xMaxVelocity&&xMaxVelocity!= -1){xVelocity = -xMaxVelocity;}
         if(yVelocity<-yMaxVelocity&&yMaxVelocity!= -1){yVelocity = -yMaxVelocity;}
+
+        if(solid && dynamicCollision && colisionBox){
+            std::vector<GameObject*> oblist = *objectList;
+            for(int i = 0; i < objectList->size(); i++){
+                auto tempComponent = dynamic_cast<PhysicsComponent*>(oblist[i]->findComponent(1));
+                if(tempComponent != nullptr && tempComponent->solid && &tempComponent->parentObject != &parentObject){
+
+                    int newXLoc = parentObject->x+xVelocity+collisionOffsetX;
+                    int newYLoc = parentObject->y+yVelocity+collisionOffsetY;
+
+                    if(newXLoc+colliderSizeX > tempComponent->parentObject->x && newXLoc < tempComponent->parentObject->x + tempComponent->colliderSizeX &&
+                    newYLoc+colliderSizeY > tempComponent->parentObject->y && newYLoc < tempComponent->parentObject->y + tempComponent->colliderSizeY )
+                    {
+                        xVelocity = 0;
+                    }
+
+                    if(newYLoc+colliderSizeY > tempComponent->parentObject->y && newYLoc < tempComponent->parentObject->y + tempComponent->colliderSizeY &&
+                    newXLoc+colliderSizeX > tempComponent->parentObject->x && newXLoc < tempComponent->parentObject->x + tempComponent->colliderSizeX )
+                    {
+                        yVelocity = 0;
+                    }
+                }
+            }
+        }
+
         parentObject->x = parentObject->x+xVelocity;
         parentObject->y = parentObject->y+yVelocity;
     }
