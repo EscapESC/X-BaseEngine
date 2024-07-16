@@ -13,8 +13,9 @@ X-Base Engine is a C++ library created by Václav Rada aiming to make developmen
 - [x] Camera implementatin
 - [ ] Function comments
 - [ ] Proper documentation
-- [ ] Colision system with AABB and SAT systems
-- [ ] Light system
+- [ ] Advanced SAT collision system
+- [x] AABB collision system
+- [x] Light system
 - [ ] Better velocity system
 - [ ] Triggers and interacts
 - [ ] Mouse input interupts 
